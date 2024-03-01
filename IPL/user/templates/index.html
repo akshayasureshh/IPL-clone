@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL|</title>
+    <link rel="website icon" type="png/jpg" href="images/logo-icon.webp">
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700;800&family=Raleway:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="cpl-mainpage">
+        <div class="container">
+            {% include 'navbar.html' %}
+
+        </div>
+
+        <div id="carouselExampleCaptions" class="carousel slide" style="position: relative; top: -130px;">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active cycle">
+                    <img src="{% static 'images/slider-bg-image-1 1.jpg' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <p class="m-0">Season 01</p>
+                        <h5>CHAMPIONS OF CPL 2023</h5>
+                        <h1 class="hm-pge-bnr-hdng">MCA PANTHERS</h1>
+                    </div>
+                </div>
+                <div class="carousel-item cycle">
+                    <img src="{% static 'images/slider-bg-image-2 2.jpg' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <p class="m-0">Season 01</p>
+                        <h5>RUNNER UP CPL 2023</h5>
+                        <h1>ROYAL TIGERS MYSURU</h1>
+                    </div>
+                </div>
+                <div class="carousel-item cycle">
+                    <img src="{% static 'images/slider-bg-image-3 1.jpg' %}" class="d-block w-100" alt="...">
+                    <div class="carousel-caption">
+                        <h1>CPL SEASON 02 -LOADING</h1>
+                        <h5>Starts on 13 Jan 2024</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Teams -->
+
+    <section class="home_team_slider001">
+        <div class="home-page-team-logo-slider" style="margin-bottom: 50px;">
+
+            <div class="container">
+                <div class="row">
+                    <div>
+                        <div class="teams_slide">
+                            {% for team in teams %}
+                            <div class="team_slider_padd">
+                                <div>
+                                    <a style="background: #f1f1f1; padding: 30px; display: block; border-radius: 50%;"
+                                        href="/all_team_players/{{team.id}}/"><img src="{{team.Team_logo.url}}"
+                                            alt="CPL Team - {{team.Team_name}}" width="100%">
+                                    </a>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Match details -->
+
+    <div id="gallery" class="site-portfolio site-dark-section-a">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="site-portfolio-main">
+                        <ul class="site-portfolio-tabs">
+                            <li id="home-lve" onclick="hmlive()">live</li>
+                            <li id="home-cmplt" onclick="completed()">Completed</li>
+                            <li id="home-upcmng" onclick="upcoming()">Upcoming</li>
+                        </ul>
+                        <div class="row">
+                            {% for match in liveMatches %}
+                            <a href="{% url 'user-live' match.matchid.pk %}" style="text-decoration: none;">
+                                <div class="col-md-6">
+                                    <div class="home-pge-live-bx">
+                                        <div>
+                                            <div class="live-teams-details-frst-clm " style="text-align: left;"
+                                                id="home-live">
+                                                <div class="tourment-nam-lie-clm">
+                                                    <div>
+                                                        <div class="liv-trmnt-name">
+                                                            <span>{{match.Match_season.Match_season}}</span>
+                                                        </div>
+                                                        <div class="liv-trmnmt-live-bx">
+                                                            <span class="live-button-bx">Live</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="live-trmnt-location mt-3">
+                                                    <span>Banglore, 10 Ov., Limited Overs,
+                                                        {{match.Match_date.Match_date}}</span>
+                                                </div>
+                                                <div class="live-tos-clm mb-3">
+                                                    <span>Toss: won by {{match.Match_toss.Match_toss}}</span>
+                                                </div>
+                                                <div class="live-team mb-2">
+                                                    <div><b><img src="{{match.TeamA.TeamA.Team_logo.url}}"
+                                                                class="team_h_logo" alt=""
+                                                                srcset="">{{match.TeamA.TeamA}}</b></div>
+                                                    <div><b>410/10 <span>(10.0 Ov)</span></b></div>
+                                                </div>
+                                                <div class="live-team">
+                                                    <div><b><img src="{{match.TeamB.TeamB.Team_logo.url}}"
+                                                                class="team_h_logo" alt=""
+                                                                srcset="">{{match.TeamB.TeamB}}</b></div>
+                                                    <div><b>410/10 <span>(10.0 Ov)</span></b></div>
+                                                </div>
+                                                <div class="live-finl-updtn mt-4">
+                                                    <!-- <span class="team">Angels won by 1 run (DLS par score after 10.0 overs
+                                                        is 105 )</span> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+
+                        <!-- home-completed -->
+
+                        <div class="site-portfolio-tabs-content mt-3" id="home-completed">
+                            <div class="row">
+                                {% for match in completeds %}
+                                <div class="completed portfolio-items col-xs-12 col-sm-12 col-md-4">
+                                    <a href="{% url 'completed' match.match_id.pk %}">
+                                        <div class="pack_main_bx">
+                                            <p class="border_btton"><span class="result_bg">RESULT</span> <span
+                                                    class="right_align">{{match.season.Match_season}}</span> </p>
+                                            <div class="pack-maine-bx-bg-clr-clm">
+
+                                                <p>BIG Bouncers Cricket Ground, Bengaluru</p>
+                                                <p style="font-size:12px; font-style:italic;">Jun 17, 2023 <span
+                                                        class="right_align"><strong>League Matches</strong></span></p>
+
+                                                <table width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><img src="{{match.team1.TeamA.Team_logo.url}}" alt=""
+                                                                    class="team_h_logo">{{match.team1.TeamA}}
+                                                            </td>
+                                                            <td>81/4 (7.0)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="{{match.team2.TeamB.Team_logo.url}}" alt=""
+                                                                    class="team_h_logo">{{match.team2.TeamB}}</td>
+                                                            <td>83/1 (4.2)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
+                                            <p class="border_top"><span><strong>MCA PANTHERS</strong> won by <strong>8
+                                                        wickets</strong></span>
+                                            </p>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- </div> -->
+
+                        <section id="home-pg-upcoming">
+                            <div class="fixture-upcoming-sectin mb-2">
+
+                                <!-- <h2>Up coming</h2> -->
+                                <div class="site-portfolio-tabs-content mt-3" id="home-upcoming">
+                                    <div class="row">
+                                        {% for match in upcoming_match %}
+                                        <div class="completed portfolio-items col-xs-12 col-sm-12 col-md-4">
+                                            <a href="{% url 'upcoming' match.pk %}">
+
+                                                <div class="pack_main_bx">
+                                                    <p class="border_btton"><span class="result_bg">RESULT</span> <span
+                                                            class="right_align">{{match.Match_season}}</span> </p>
+                                                    <div class="pack-maine-bx-bg-clr-clm">
+
+                                                        <p>BIG Bouncers Cricket Ground, Bengaluru</p>
+                                                        <p style="font-size:12px; font-style:italic;">Jun 17, 2023 <span
+                                                                class="right_align"><strong>League
+                                                                    Matches</strong></span></p>
+
+                                                        <table width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><img src="{{match.TeamA.Team_logo.url}}" alt=""
+                                                                            class="team_h_logo">{{match.TeamA}}
+                                                                    </td>
+                                                                    <td>81/4 (7.0)</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><img src="{{match.TeamB.Team_logo.url}}" alt=""
+                                                                            class="team_h_logo">{{match.TeamB}}</td>
+                                                                    <td>83/1 (4.2)</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                    <p class="border_top"><span><strong>MCA PANTHERS</strong> won by
+                                                            <strong>8
+                                                                wickets</strong></span>
+
+                                                    </p>
+                                                </div>
+                                            </a>
+
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="upcmng-trmnt-bx">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Gallery -->
+
+    <!-- point table -->
+
+
+
+
+    <!-- about ipl -->
+
+    <section>
+        <div class="stadium">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="margin4div">
+                            <p class="italic_font">Consultants Premier League</p>
+                            <h1 class="tblhead">TEAM and PLAYERS <br> REGISTRATION</h1>
+                            <p class="tm_name for_table  andstadium">Lorem Ipsum is simply dummy text of the printing
+                                and typesetting
+                                industry Lorem Ipsum has.</p>
+                            <p class="text-white text-center mt-3">Lorem Ipsum is simply dummy text of the printing and
+                                typesetting
+                                industry. Lorem Ipsum has been the industry's standard dummy text ever since the when an
+                                unknown printer
+                                took a galley of type and scrambled it to make a type specimen book. It has survived not
+                                only five
+                                centuries simply dummy text of the printing standard dummy text eve and typesetting.</p>
+                            <img src="{% static 'images/logo.png' %}" class="iiiicon">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="iiiicon">
+                                        <img src="{% static 'images/ball1.png' %}">
+                                        <div class="ball1">
+                                            <h1 class="tblhead m-0">AGE</h1>
+                                            <p class="tm_name for_table  andstadium">Age above 27</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-8">
+                                    <div class="iiiicon iiiicon01">
+                                        <img src="{% static 'images/ball3.png' %}">
+                                        <div class="ball2">
+                                            <h1 class="tblhead m-0">ELIGIBILITY</h1>
+                                            <p class="tm_name for_table  andstadium">Must be <br> AIECCA/CHECK <br>
+                                                Member</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="iiiicon">
+                                        <img src="{% static 'images/ball1.png' %}">
+                                        <div class="ball3">
+                                            <h1 class="tblhead m-0">NOT</h1>
+                                            <p class="tm_name for_table  andstadium">Not be a <br> Professional
+                                                <br>Cricketer
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- top=perfomer-section start -->
+
+
+
+    <!-- sponser-section start -->
+
+    <section>
+        <div class="team_slider_padd">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font text-center redclr">Sponsors</p>
+                            <div class="teams_slide">
+                                {% for sponser in sponserItem %}
+                                <div class="team_slider_padd">
+                                    <a href="">
+                                        <img src="{{sponser.sponser_logo.url}}" width="100%">
+                                        <h6>{{sponser.sponser_name}}</h6>
+                                    </a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.8.4/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

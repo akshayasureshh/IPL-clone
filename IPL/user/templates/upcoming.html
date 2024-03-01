@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="website icon" type="png/jpg" href="{% static 'images/logo-icon.webp' %}">
+    <link rel="shortcut icon" href="{% static 'images/logo-icon.webp' %}">
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- header section start -->
+
+    <div class="team-detail-banner">
+        <div class="container">
+            {% include "navbar.html" %}
+
+        </div>
+
+
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="team-dtl-sctn-smal-dtl-bx" style="margin-top: 100px;">
+                    <div class="col-md-12">
+                        <h1>SCORECARD</h1>
+
+                        <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <section>
+
+        <div class="container fixtr-live-section my-5">
+            <div class="row">
+                <div class="col-md-8">
+
+                    <div class="live-teams-details-frst-clm">
+                        <div class="tourment-nam-lie-clm">
+                            <div>
+                                <div class="liv-trmnt-name">
+                                    <span>CPL - {{upcoming_match.Match_season}}</span>
+                                </div>
+                                <div class="liv-trmnmt-live-bx">
+                                    <span class="result_bg">League Match</span>
+
+                                    <!-- <span class="live-button-bx">Live</span> -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="live-trmnt-location">
+                            <span>{{upcoming_match.Match_date}}</span>
+                        </div>
+                        <div class="live-tos-clm mb-3">
+                            <span>Toss: {{team1}} Choose to Bat</span>
+                        </div>
+                        <div class="live-team mb-2">
+                            <div><b><img src="{{team1.Team_logo.url}}" style="width: 30px; border-radius: 30%;" alt="{{team1}}"> {{team1}}</b>
+                            </div>
+                            <div><b>0/10 <span>(0.0 Ov)</span></b></div>
+                        </div>
+                        <div class="live-team">
+                            <div><b><img src="{{team2.Team_logo.url}}" style="width: 30px; border-radius: 30%;" alt="{{team2}}"> {{team2}}</b>
+                            </div>
+                            <div><b>00/10 <span>(00.0 Ov)</span></b></div>
+                        </div>
+
+                        <div class="live-finl-updtn mt-4">
+                            <span class="team"> (none )</span>
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="cpl-score-container">
+
+                        <div class="w3-black-head">
+                            <button class="w3-button tablink w3-active"
+                                onclick="openCity(event,'{{team1}}')">{{team1}}</button>
+                            <button class="w3-button tablink" onclick="openCity(event,'{{team2}}')">{{team2}}</button>
+                            <button class="w3-button tablink" onclick="openCity(event,'Commentary')">Commentary</button>
+                        </div>
+
+
+
+
+                        <div id="{{team1}}" class="city">
+                            <table width="100%" >
+                                <tbody>
+                                    <thead>
+                                        <tr>
+                                            <td>Batting</td>
+                                            <td>R</td>
+                                            <td>B</td>
+                                            <td>4s</td>
+                                            <td>6s</td>
+                                            <td>S/R</td>
+                                        <tr>
+                                    </thead>
+                                    {% for player in team1_players %}
+                                    <tr>
+                                        <td><a target="_blank" href=""><img
+                                                    src="{{player.Player_logo.url}}"
+                                                    style="border-radius:50%; width:30px; padding: 0;"
+                                                    alt="{{team1}} Player {{player.Player_name}}"
+                                                    class="team_h_logo">{{player.Player_name}}</a></td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+
+
+
+                        <div id="{{team2}}" class="city" style="display:none">
+                            <table width="100%" border="0">
+                                <tbody>
+                                    <thead>
+                                        <tr>
+                                            <td>Batting</td>
+                                            <td>R</td>
+                                            <td>B</td>
+                                            <td>4s</td>
+                                            <td>6s</td>
+                                            <td>S/R</td>
+                                        <tr>
+                                    </thead>
+
+                                    {% for player in team2_players %}
+                                    <tr>
+                                        <td><a target="_blank" href="/player_profile/{{player.id}}/"><img
+                                                    src="{{player.Player_logo.url}}"
+                                                    style="border-radius:50%; width:30px; padding: 0;"
+                                                    alt="{{team2}} Player {{player.Player_name}}"
+                                                    class="team_h_logo">{{player.Player_name}}</a></td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                        <td>0.0</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
+
+                        <div id="Commentary" class="city" style="display:none">
+                            <h2>Commentary</h2>
+
+                            <table width="100%" border="0">
+                                <tbody>
+                                    <tr>
+                                        <td> Arlen b Saraha 3r 4b 0x4s 0x6s SR: 75.00</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                </div>
+
+                <!-- addvertisment side bx -->
+
+                <div class="col-md-4">
+                    <div class="advrtisment-side-sctn">
+                        <div class="ytb-live-fram">
+                            <iframe height="315" style="width:100%;"
+                                src="" frameborder="0"
+                                allowfullscreen=""></iframe>
+                        </div>
+
+                        <div class="ytb-live-fram">
+                            <iframe height="315" style="width:100%;"
+                                src="" frameborder="0"
+                                allowfullscreen=""></iframe>
+                        </div>
+
+                        <div class="advrtisment-side-sctn-add-clm">
+                            <img src="" alt="">
+                            <span class="sponsers-clm-txt">Sponsered By V-Guid</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- live section end -->
+
+    <!-- footer -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section end -->
+
+
+
+    <script>
+        function openCity(evt, cityName) {
+            var i, x, tablinks;
+            x = document.getElementsByClassName("city");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < x.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" w3-active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " w3-active";
+        }
+    </script>
+
+
+    <!-- js -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+{% extends 'owner-dashboard.html' %}
+
+
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                {{user.name}}
+            </h3>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th>Date</th>
+                                <th>Team 1</th>
+                                <th>Team 2</th>
+                                <th>Ground </th>
+                                <th>Match</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tournament in matches %}
+                            <tr>
+                                <td>{{tournament.Match_date}}</td>
+                                <td class="py-1">
+                                    <img src="{{tournament.TeamA.Team_logo.url}}" alt="" srcset="">
+
+                                    {{tournament.TeamA}}
+                                </td>
+                                <td class="py-1">
+                                    <img src="{{tournament.TeamB.Team_logo.url}}" alt="" srcset="">
+                                    {{tournament.TeamB}}
+                                </td>
+                                <td>{{tournament.Match_season}}</td>
+                                <td>{{tournament.Match_type}}</td>
+                                <td><a href="{% url 'match-player-selection' tournament.id %}" class="btn btn-danger btn-fw">
+                                    <i class="fa fa-users"></i>
+                                    Select Players</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+
+    <!-- partial -->
+</div>
+
+{% endblock content %}

@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cricket Score Update</title>
+    <style>
+        .button {
+            background-color: #04AA6D;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button {
+            background-color: white;
+            color: black;
+            border: 2px solid #f44336;
+        }
+
+        .button:hover {
+            background-color: #f44336;
+            color: white;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #000000;
+            position: relative;
+        }
+
+        th {
+            background-color: #ea9696;
+        }
+
+        td[contenteditable="true"] {
+            background-color: #000000;
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            margin: 0;
+        }
+
+        .add-remove-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-remove-buttons button {
+            padding: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            /* Smooth transition effect */
+        }
+
+        /* Hover effect for buttons */
+        .add-remove-buttons button:hover {
+            background-color: #ffffff;
+            /* Change the background color on hover */
+        }
+
+        /* popup styles */
+
+        .swal-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .swal-title:first-child {
+            margin-top: 0;
+        }
+
+        .swal-title:not(:last-child) {
+            margin-bottom: 0;
+        }
+
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+            z-index: 9999;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            top: 10%;
+            position: relative;
+            transition: all 600ms ease-in-out;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .popup .close:hover {
+            color: #06D85F;
+        }
+
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+        }
+
+
+        /* Table Styling */
+        table {
+
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .change-bowler-message {
+            color: red;
+            /* Change the color as needed */
+        }
+
+        .hidden-cell {
+            display: none;
+        }
+
+        .second {
+            padding: 10px 20px;
+            background-color: #f5adf7;
+            color: rgb(13, 13, 13);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> -->
+</head>
+
+<body>
+
+
+
+
+    <h2>Batsman Score Update</h2>
+    <!-- <p>{{ upcoming_team_id }}</p> -->
+    <div class="container">
+        <div class="row">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="col-md-2 ms-auto">
+                    <button class="complte-btn" type="submit" name="complete_match" style="background-color: #f44336; padding: 10px;">complete</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="table-responsive">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="hidden-cell">teamid</th>
+                    <th class="hidden-cell">id</th>
+                    <th>Batsman</th>
+                    <th>R </th>
+                    <th>B</th>
+                    <th>1s<button id="ones-plus" onclick="updateScore('ones', 1,'bowler1')">+</button><button
+                            id="ones-minus" onclick="updateScore('ones', -1,'bowler1')">-</button></th>
+                    <th>2s<button id="twos-plus" onclick="updateScore('twos', 1)">+</button><button id="twos-minus"
+                            onclick="updateScore('twos', -1)">-</button></th>
+                    <th>3s<button id="threes-plus" onclick="updateScore('threes', 1)">+</button><button
+                            id="threes-minus" onclick="updateScore('threes', -1)">-</button></th>
+                    <th>4s<button id="fours-plus" onclick="updateScore('fours', 1)">+</button><button id="fours-minus"
+                            onclick="updateScore('fours', -1)">-</button></th>
+                    <th>6s<button id="sixes-plus" onclick="updateScore('sixes', 1)">+</button><button id="sixes-minus"
+                            onclick="updateScore('sixes', -1)">-</button></th>
+                    <th>WD <button id="wides-plus" onclick="updateScore('wides', 1, 'batsman1')">+</button>
+                        <button id="wides-minus" onclick="updateScore('wides', -1, 'batsman1')">-</button>
+                    </th>
+
+                    <th>LB <button id="leg-byes-plus"
+                            onclick="updateScore('leg-byes', 1, 'batsman1','bowler1')">+</button>
+                        <button id="leg-byes-minus" onclick="updateScore('leg-byes', -1, 'batsman1')">-</button>
+                    </th>
+                    <th>NB<button id="no-balls-plus" onclick="updateScore('no-balls', 1)">+</button>
+                        <button id="no-balls-minus" onclick="updateScore('no-balls', -1, 'batsman1')">-</button>
+                    </th>
+                    <th>DB <button id="dead-ball-plus"
+                            onclick="updateScore('dead-ball', 1, 'batsman1', 'bowler1')">+</button>
+                        <button id="dead-ball-minus"
+                            onclick="updateScore('dead-ball', -1, 'batsman1', 'bowler1')">-</button>
+                    </th>
+                    <th>SR</th>
+                    <th>Wicket Type</th>
+                    <th>OUT</th>
+                </tr>
+            </thead>
+            {{team1}}
+            <tbody>
+                <tr>
+                    <td><input type="radio" name="batsman" value="batsman1" onclick="selectPlayer('batsman1')"></td>
+                    <td class="hidden-cell" id="team-id-batsman1">{{team1.id}}</td>
+
+                    <td class="hidden-cell match-id" id="match-id-batsman1">0</td>
+
+                    <td>
+                        <select id="batsman1-dropdown">
+                            <option value="">select batsman1</option>
+                            {% for player in batsmen %}
+                            <option value="{{player.Player_name}}">{{player.Player_name}} {{team1}}</option>
+                            {% endfor %}
+
+
+                        </select>
+                    </td>
+                    <td id="runs-batsman1">0</td>
+                    <td id="balls-batsman1">0</td>
+                    <td id="ones-batsman1">0</td>
+                    <td id="twos-batsman1">0</td>
+                    <td id="threes-batsman1">0</td>
+                    <td id="fours-batsman1">0</td>
+                    <td id="sixes-batsman1">0</td>
+                    <td id="wides-batsman1">0</td>
+                    <td id="leg-byes-batsman1">0</td>
+                    <td id="no-balls-batsman1">0</td>
+                    <td id="dead-ball-batsman1">0</td>
+                    <td id="strike-rate-batsman1">0.00</td>
+                    <td>
+
+
+
+                        <a class="btn btn-light" href="#popup1">
+                            <i class="fa fa-times text-danger"></i><button>Choose</button>
+                        </a>
+
+                        <div id="popup1" class="overlay">
+                            <div class="popup">
+
+                                <div class="swal-icon swal-icon--warning">
+                                    <span class="swal-icon--warning__body">
+                                        <span class="swal-icon--warning__dot"></span>
+                                    </span>
+                                </div>
+
+                                <div class="content">
+                                    <div class="swal-title">Select Options</div>
+
+                                    <!-- Add select boxes here -->
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Select Option</th>
+                                                <th>Select bowler</th>
+                                                <th>Select batsman</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            <tr>
+                                                <td>
+
+                                                    <select id="stumpled-dropdown">
+                                                        <option value="Stumpled">Stumpled</option>
+                                                        <option value="Run out">Run Out</option>
+                                                        <option value="Catch out">Catch Out</option>
+                                                        <option value="LBW">LBW</option>
+                                                        <option value="Stumpled">Stumpled</option>
+                                                        <option value="Stumpled">Stumpled</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select id="bowler-dropdown">
+                                                        {% for player in bowler %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select id="batsman-dropdown">
+                                                        <option value="">select batsman</option>
+                                                        {% for player in batsmen %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}<p>
+                                                            </p>
+                                                        </option>
+                                                        {% endfor %}
+
+
+                                                    </select>
+                                                </td>
+
+
+                                            </tr>
+
+
+                                            <!-- <tr>
+                                            <td class="checkbox-container">
+                                                <input type="checkbox" id="player2" name="player2">
+                                                <label for="player2">Run Out</label>
+                                            </td>
+                                            <td>
+
+                                                <select id="bowler1-dropdown">
+                                                    {% for player in bowler %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                
+                                            </td>
+                                        </tr> -->
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                    <!-- End of select boxes -->
+
+                                </div>
+
+                                <div class="swal-footer">
+                                    <div class="swal-button-container">
+                                        <button type="reset" onclick="history.back()"
+                                            class="swal-button swal-button--cancel btn btn-danger">Cancel</button>
+                                        <div class="swal-button__loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <div class="swal-button-container">
+                                        <a class="swal-button swal-button--confirm btn btn-primary" href="#">OK</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </td>
+                    <td>
+                        <button onclick="closeScore('batsman1')">Out</button>
+                    </td>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="radio" name="batsman" value="batsman2" onclick="selectPlayer('batsman2')"></td>
+                    <td class="hidden-cell" id="team-id-batsman2">{{team1.id}}</td>
+
+                    <td class="hidden-cell match-id" id="match-id-batsman2">0</td>
+
+                    <td>
+                        <select id="batsman2-dropdown">
+                            <option value="">select batsman2</option>
+                            {% for player in batsmen %}
+                            <option value="{{player.Player_name}}">{{player.Player_name}} {{team1}}</option>
+
+                            {% endfor %}
+                        </select>
+                    </td>
+
+                    <td id="runs-batsman2">0</td>
+                    <td id="balls-batsman2">0</td>
+                    <td id="ones-batsman2">0</td>
+                    <td id="twos-batsman2">0</td>
+                    <td id="threes-batsman2">0</td>
+                    <td id="fours-batsman2">0</td>
+                    <td id="sixes-batsman2">0</td>
+                    <td id="wides-batsman2">0</td>
+                    <td id="leg-byes-batsman2">0</td>
+                    <td id="no-balls-batsman2">0</td>
+                    <td id="dead-ball-batsman2">0</td>
+                    <td id="strike-rate-batsman2">0.00</td>
+                    <td>
+
+
+
+                        <a class="btn btn-light" href="#popup1">
+                            <i class="fa fa-times text-danger"></i><button>Choose</button>
+                        </a>
+
+                        <div id="popup1" class="overlay">
+                            <div class="popup">
+
+                                <div class="swal-icon swal-icon--warning">
+                                    <span class="swal-icon--warning__body">
+                                        <span class="swal-icon--warning__dot"></span>
+                                    </span>
+                                </div>
+
+                                <div class="content">
+                                    <div class="swal-title">Select Options</div>
+
+                                    <!-- Add select boxes here -->
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Select Option</th>
+                                                <th>Select bowler</th>
+                                                <th>Select batsman</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+
+                                            <tr>
+                                                <td>
+                                                    <label for="stumpled-dropdown">Select Option</label>
+                                                    <select id="stumpled-dropdown">
+                                                        <option value="Stumpled">Stumpled</option>
+                                                        <option value="Run out">Run Out</option>
+                                                        <option value="Catch out">Catch Out</option>
+                                                        <option value="LBW">LBW</option>
+                                                        <option value="Stumpled">Stumpled</option>
+                                                        <option value="Stumpled">Stumpled</option>
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select id="bowler-dropdown">
+                                                        {% for player in bowler %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}
+                                                        </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </td>
+
+                                                <td>
+                                                    <select id="batsman-dropdown">
+                                                        <option value="">select batsman1</option>
+                                                        {% for player in batsmen %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}
+                                                        </option>
+                                                        {% endfor %}
+
+
+                                                    </select>
+                                                </td>
+
+
+                                            </tr>
+
+                                            <!-- <tr>
+                                            <td class="checkbox-container">
+                                                <input type="checkbox" id="player2" name="player2">
+                                                <label for="player2">Run Out</label>
+                                            </td>
+                                            <td>
+
+                                                <select id="bowler1-dropdown">
+                                                    {% for player in bowler %}
+                                                        <option value="{{player.Player_name}}">{{player.Player_name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                
+                                            </td>
+                                        </tr> -->
+                                            <!-- Add more rows as needed -->
+                                        </tbody>
+                                    </table>
+                                    <!-- End of select boxes -->
+
+                                </div>
+
+                                <div class="swal-footer">
+                                    <div class="swal-button-container">
+                                        <button type="reset" onclick="history.back()"
+                                            class="swal-button swal-button--cancel btn btn-danger">Cancel</button>
+                                        <div class="swal-button__loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <div class="swal-button-container">
+                                        <a class="swal-button swal-button--confirm btn btn-primary" href="#"
+                                            id="okButton">OK</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </td>
+                    <td><button onclick="closeScore('batsman2')">Out</button></td>
+                </tr>
+
+
+            </tbody>
+
+
+        </table>
+    </div>
+
+    {{team2}}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th class="hidden-cell">teamid</th>
+                    <th class="hidden-cell">id</th>
+                    <th>Bowler</th>
+                    <th>R</th>
+                    <th>B</th>
+                    <th>M</th>
+                    <!-- <th>NB</th>
+                <th>Eco</th> -->
+                    <th>O</th>
+                    <th>W</th>
+                    <th>Save Score</th>
+                    <th>Change Bowler </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add a row for bowler below the batsman rows -->
+
+
+                <tr>
+                    <!-- <td><input type="radio" name="bowler" value="bowler1" onclick="select('bowler1')"></td> -->
+                    <td class="hidden-cell" id="team-id-bowler1">{{team2.id}}</td>
+                    <td class="hidden-cell match-id" id="match-id-bowler1">0</td>
+
+
+                    <td>
+                        <select id="bowler1-dropdown" onchange="getBowler(this.value)">
+                            <option value="">select bowler</option>
+                            {% for player in bowler %}
+                            <option value="{{player.Player_name}}">{{player.Player_name}} {{team2}}</option>
+                            {% endfor %}
+                        </select>
+
+                    </td>
+
+                    <td id="runs-bowler1">0</td>
+                    <td id="balls-bowler1">0</td>
+                    <td>
+                        <span id="maiden-overs-bowler1">0</span>
+
+                        <label for="maiden-overs-bowler1"></label>
+                        <span class="score-control increase" onclick="updateMaidenOver('bowler1', 1)">&#x25B2;</span>
+                        <span class="score-control decrease" onclick="updateMaidenOver('bowler1', -1)">&#x25BC;</span>
+
+                    </td>
+                    <!-- <td>
+                    <span id="no-balls-bowler1">0</span>
+                    <label for="no-balls-bowler1"></label>
+                    <span class="score-control increase" onclick="updateNoBalls('bowler1', 1)">&#x25B2;</span>
+                    <span class="score-control decrease" onclick="updateNoBalls('bowler1', -1)">&#x25BC;</span> 
+                </td> -->
+                    <!-- <td id="wicket-bowler1">0</td> -->
+                    <td>
+                        <span id="overs-bowler1">0</span>
+                    </td>
+                    <td>
+                        <span id="wicket-bowler1">0</span>
+                        <label for="wicket-bowler1"></label>
+                        <span class="score-control increase" onclick="updateWicket('bowler1', 1)">&#x25B2;</span>
+                        <span class="score-control decrease" onclick="updateWicket('bowler1', -1)">&#x25BC;</span>
+
+                    </td>
+                    <td><button id="saveBowlerDataButton">Save Bowler Data</button></td>
+                    <!-- <td><button data-player="bowler1" onclick="saveBowlerData(this)">Save</button></td> -->
+                    <td>
+                        <button type="submit" id="close-button" onclick="resetLocalStorage()">Change bowler</button>
+                    </td>
+
+                    <div id="bowler-message-container"></div>
+
+                    </td>
+                    <!-- <td><button type="submit" id="change-bowler-button">Change Bowler</button></td> -->
+
+
+                </tr><!-- Add more rows for additional bowlers if needed -->
+            </tbody>
+        </table>
+        <!-- </div> -->
+
+
+        <!-- user view section -->
+        <table>
+            <h1>Updated live view</h1>
+            <thead>
+                <tr>
+                    <th>Players</th>
+                    <th>R</th>
+                    <th>B</th>
+                    <th>1s</th>
+                    <th>2s</th>
+                    <th>3s</th>
+                    <th>4s</th>
+                    <th>6s</th>
+                    <th>WD</th>
+                    <th>LB</th>
+                    <th>SR</th>
+                </tr>
+            </thead>
+            <tbody id="display"></tbody>
+
+
+        </table>
+
+        <!-- userview ends here -->
+
+
+        <!-- userview bowler starts -->
+
+        <div class="container">
+
+
+
+            <table style="width: 100%;">
+                <h1>Bowler</h1>
+                <thead>
+                    <tr>
+                        <th>Bowler name</th>
+                        <th>O</th>
+                        <th>M</th>
+                        <th>R</th>
+                        <th>W</th>
+                        <th>Eco</th>
+                    </tr>
+                </thead>
+                <tbody id="displayBowler"></tbody>
+            </table>
+        </div>
+
+        <!-- <div style="text-align: center;">
+    <a href="/tossreselect/{{ match.id }}/"><button class="second" id="secondHalfButton">Second half</button></a> 
+</div> -->
+        <div style="text-align: center;">
+
+            <button class="second" id="secondHalfButton" name="reselectiontoss">Second half</button>
+
+        </div>
+
+
+        <!-- end  -->
+
+
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+        <script>
+            document.getElementById('saveBowlerDataButton').addEventListener('click', function () {
+                saveBowlerData('bowler1', document.getElementById("bowler1-dropdown"));
+            });
+
+
+
+            document.getElementById('close-button').addEventListener('click', function () {
+                transferBowlerData('bowler1', document.getElementById("bowler1-dropdown"));
+            });
+
+
+
+
+
+
+
+            let batsmanScores = {};
+
+
+            let selectedPlayer = null;
+
+            function selectPlayer(player) {
+                selectedPlayer = player;
+
+            }
+
+
+
+            // function updateScore(type, increment) {
+            //     const scoreElement = document.getElementById(`${type}-${selectedPlayer}`);
+            //     const currentValue = parseInt(scoreElement.innerText) || 0;
+            //     const newValue = currentValue + increment;
+
+            //     if (newValue >= 0) {
+            //         scoreElement.innerText = newValue;
+
+            //         // Additional check for 'no-balls'
+            //         if (type === 'no-balls') {
+            //             updateBowlerNoBalls(selectedPlayer, increment);
+            //             updateBalls(selectedPlayer);
+            //             updateRuns(selectedPlayer);
+            //         } else {
+            //             updateBalls(selectedPlayer);
+            //             updateRuns(selectedPlayer);
+            //             updateBowlerScores(selectedPlayer);
+            //         }
+            //     }
+            // }
+
+
+
+
+
+            function updateScore(type, increment) {
+                console.log(`Updating ${type} for ${selectedPlayer}`);
+                console.log('Current selectedPlayer:', selectedPlayer);
+                const scoreElement = document.getElementById(`${type}-${selectedPlayer}`);
+                const currentValue = parseInt(scoreElement.innerText) || 0;
+                const newValue = currentValue + increment;
+
+
+
+                if (newValue >= 0) {
+                    scoreElement.innerText = newValue;
+
+                    if (type === 'no-balls') {
+                        updateBowlerNoBalls(selectedPlayer);
+                        updateRuns(selectedPlayer);
+                        updateBalls(selectedPlayer)
+                        saveData(selectedPlayer);
+                    } else {
+
+
+                        updateBalls(selectedPlayer);
+                        updateRuns(selectedPlayer);
+                        saveData(selectedPlayer);
+                    }
+
+                }
+
+
+
+
+
+
+                const values = {
+                    'ones': { runs: 1, balls: 1 },
+                    'twos': { runs: 2, balls: 1 },
+                    'threes': { runs: 3, balls: 1 },
+                    'fours': { runs: 4, balls: 1 },
+                    'sixes': { runs: 6, balls: 1 },
+                    'wides': { runs: 1, balls: 0 },
+                    'leg-byes': { runs: 1, balls: 0 },
+                    'no-balls': { runs: 0, balls: 0 },
+                    'dead-ball': { runs: 0, balls: 1 }
+                };
+
+                const counts = JSON.parse(localStorage.getItem('counts')) || {};
+                const ballsCount = JSON.parse(localStorage.getItem('ballsCount')) || {};
+
+
+                const runIncrement = values[type].runs;
+                const ballIncrement = values[type].balls;
+
+
+                counts[type] = (counts[type] || 0) + increment * runIncrement;
+                ballsCount[type] = (ballsCount[type] || 0) + increment * ballIncrement;
+
+
+                localStorage.setItem('counts', JSON.stringify(counts));
+                localStorage.setItem('ballsCount', JSON.stringify(ballsCount));
+
+
+                // alert(`${type} Count Updated: ${counts[type]}`);
+
+
+                updateRunsBowlerColumn(counts);
+                updateBallsBowlerColumn(ballsCount);
+
+
+
+            }
+
+
+
+            function updateRunsBowlerColumn(counts) {
+
+                const runsBowlerElement = document.getElementById('runs-bowler1');
+
+                if (runsBowlerElement) {
+
+                    const totalCount = Object.values(counts).reduce((sum, count) => sum + count, 0);
+
+
+                    console.log('Total Count:', totalCount);
+
+
+                    runsBowlerElement.innerText = totalCount;
+                } else {
+
+                    console.error('Element with id "runs-bowler1" not found');
+                }
+            }
+
+            // function getCookie(name) {
+            //     const value = `; ${document.cookie}`;
+            //     const parts = value.split(`; ${name}=`);
+            //     if (parts.length === 2) return parts.pop().split(';').shift();
+            // }
+
+            function updateBallsBowlerColumn(ballsCount) {
+
+                const ballsBowlerElement = document.getElementById('balls-bowler1');
+                const oversBowlerElement = document.getElementById('overs-bowler1');
+
+                if (ballsBowlerElement && oversBowlerElement) {
+
+                    const totalCount = Object.values(ballsCount).reduce((sum, count) => sum + count, 0);
+
+
+                    if (totalCount % 6 === 0) {
+
+                        const currentOver = parseInt(oversBowlerElement.innerText) || 0;
+                        oversBowlerElement.innerText = currentOver + 1;
+                    }
+
+
+                    ballsBowlerElement.innerText = totalCount;
+                } else {
+
+                    console.error('Elements not found');
+                }
+            }
+
+
+
+
+
+
+
+            // Function to calculate total runs for a specific player
+            function calculateTotalRuns(player) {
+                const ones = parseInt(document.getElementById(`ones-${player}`)?.innerText) || 0;
+                const twos = parseInt(document.getElementById(`twos-${player}`)?.innerText) || 0;
+                const threes = parseInt(document.getElementById(`threes-${player}`)?.innerText) || 0;
+                const fours = parseInt(document.getElementById(`fours-${player}`)?.innerText) || 0;
+                const sixes = parseInt(document.getElementById(`sixes-${player}`)?.innerText) || 0;
+                const wides = parseInt(document.getElementById(`wides-${player}`)?.innerText) || 0;
+                const legByes = parseInt(document.getElementById(`leg-byes-${player}`)?.innerText) || 0;
+                const noBalls = parseInt(document.getElementById(`no-balls-${player}`)?.innerText) || 0;
+
+                return ones + 2 * twos + 3 * threes + 4 * fours + 6 * sixes + wides + legByes + noBalls;
+            }
+
+
+
+            // Function to reset the local storage to zero
+            function resetLocalStorage() {
+                // Clear the entire local storage
+                localStorage.clear();
+
+                // alert('Local Storage Reset to Zero');
+            }
+
+
+
+
+
+
+
+
+
+
+
+            function updateBowlerNoBalls(player, increment) {
+                const noBallsElement = document.getElementById(`no-balls-bowler1`); // Assuming it's bowler1 for simplicity
+                const currentNoBalls = parseInt(noBallsElement.innerText) || 0;
+                const newNoBalls = currentNoBalls + increment;
+
+                if (newNoBalls >= 0) {
+                    noBallsElement.innerText = newNoBalls;
+                    console.log(`Bowler's no-balls updated to ${newNoBalls}`);
+                    // Optionally, you can update other bowler stats here if needed.
+                } else {
+                    console.error('Error updating bowler no-balls: Invalid value');
+                }
+            }
+
+
+
+
+
+            function updateBalls(player) {
+                const ones = parseInt(document.getElementById(`ones-${player}`).innerText);
+                const twos = parseInt(document.getElementById(`twos-${player}`).innerText);
+                const threes = parseInt(document.getElementById(`threes-${player}`).innerText);
+                const fours = parseInt(document.getElementById(`fours-${player}`).innerText);
+                const sixes = parseInt(document.getElementById(`sixes-${player}`).innerText);
+                const deadBall = parseInt(document.getElementById(`dead-ball-${player}`).innerText);
+                const legByes = parseInt(document.getElementById(`leg-byes-${player}`).innerText);
+
+
+                const totalBalls = ones + twos + threes + fours + sixes + deadBall + legByes;
+                document.getElementById(`balls-${player}`).innerText = totalBalls;
+
+            }
+
+            function updateRuns(player) {
+                const ones = parseInt(document.getElementById(`ones-${player}`)?.innerText) || 0;
+                const twos = parseInt(document.getElementById(`twos-${player}`)?.innerText) || 0;
+                const threes = parseInt(document.getElementById(`threes-${player}`)?.innerText) || 0;
+                const fours = parseInt(document.getElementById(`fours-${player}`)?.innerText) || 0;
+                const sixes = parseInt(document.getElementById(`sixes-${player}`)?.innerText) || 0;
+                const wides = parseInt(document.getElementById(`wides-${player}`)?.innerText) || 0;
+                const legByes = parseInt(document.getElementById(`leg-byes-${player}`)?.innerText) || 0;
+                const noBalls = parseInt(document.getElementById(`no-balls-${player}`)?.innerText) || 0;
+
+                const totalRuns = ones + 2 * twos + 3 * threes + 4 * fours + 6 * sixes + wides + legByes + noBalls;
+
+                const runsElement = document.getElementById(`runs-${player}`);
+
+                if (runsElement) {
+                    runsElement.innerText = totalRuns;
+
+                    updateStrikeRate(player);
+                }
+            }
+
+
+            function updateStrikeRate(player) {
+                const runsElement = document.getElementById(`runs-${player}`);
+                const ballsElement = document.getElementById(`balls-${player}`);
+                const strikeRateElement = document.getElementById(`strike-rate-${player}`);
+
+                const runs = parseInt(runsElement.innerText);
+                const balls = parseInt(ballsElement.innerText);
+                const strikeRate = ((runs / balls) * 100).toFixed(2);
+
+                strikeRateElement.innerText = isNaN(strikeRate) ? "0.00" : strikeRate;
+            }
+
+
+
+
+            // local storage fetch of matchid code 
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // Retrieve the ID from local storage
+                const matchID = localStorage.getItem('matchID');
+
+                console.log('Retrieved matchID:', matchID); // Add this line to log the retrieved ID
+
+                // Set the content of the elements with the updated ID
+                document.querySelectorAll('.match-id').forEach(function (element) {
+                    element.innerText = matchID;
+                });
+            });
+
+
+
+            function saveData(player) {
+                const batsmanDropdown = document.getElementById(`${player}-dropdown`);
+                const selectedBatsman = batsmanDropdown.options[batsmanDropdown.selectedIndex].value;
+
+                const data = {
+                    batsman_name: selectedBatsman,
+
+                    runs: parseInt(document.getElementById(`runs-${player}`).innerText),
+                    balls: parseInt(document.getElementById(`balls-${player}`).innerText),
+                    ones: parseInt(document.getElementById(`ones-${player}`).innerText),
+                    twos: parseInt(document.getElementById(`twos-${player}`).innerText),
+                    threes: parseInt(document.getElementById(`threes-${player}`).innerText),
+                    fours: parseInt(document.getElementById(`fours-${player}`).innerText),
+                    sixes: parseInt(document.getElementById(`sixes-${player}`).innerText),
+                    wides: parseInt(document.getElementById(`wides-${player}`).innerText),
+                    leg_byes: parseInt(document.getElementById(`leg-byes-${player}`).innerText),
+                    no_balls: parseInt(document.getElementById(`no-balls-${player}`).innerText),
+                    dead_ball: parseInt(document.getElementById(`dead-ball-${player}`).innerText),
+                    strike_rate: parseFloat(document.getElementById(`strike-rate-${player}`).innerText),
+                    match_id: parseInt(document.getElementById(`match-id-${player}`).innerText),
+                    team_id: parseInt(document.getElementById(`team-id-${player}`).innerText),
+                };
+
+                fetch('/save_data/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 'success') {
+                            console.log(`Data saved successfully for ${player}`);
+                        } else {
+                            console.error('Error saving data:', response.errors);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            }
+
+
+            // Function to get CSRF token from cookie
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
+
+
+
+
+
+
+
+            // function saveData(player) {
+            //     const batsmanDropdown = document.getElementById(`${player}-dropdown`);
+            //     const selectedBatsman = batsmanDropdown.options[batsmanDropdown.selectedIndex].value;
+
+            //     const data = {
+            //         batsman_name: selectedBatsman,
+
+            //         runs: parseInt(document.getElementById(`runs-${player}`).innerText),
+            //         balls: parseInt(document.getElementById(`balls-${player}`).innerText),
+            //         ones: parseInt(document.getElementById(`ones-${player}`).innerText),
+            //         twos: parseInt(document.getElementById(`twos-${player}`).innerText),
+            //         threes: parseInt(document.getElementById(`threes-${player}`).innerText),
+            //         fours: parseInt(document.getElementById(`fours-${player}`).innerText),
+            //         sixes: parseInt(document.getElementById(`sixes-${player}`).innerText),
+            //         wides: parseInt(document.getElementById(`wides-${player}`).innerText),
+            //         leg_byes: parseInt(document.getElementById(`leg-byes-${player}`).innerText),
+            //         no_balls: parseInt(document.getElementById(`no-balls-${player}`).innerText),
+            //         dead_ball: parseInt(document.getElementById(`dead-ball-${player}`).innerText),
+            //         strike_rate: parseFloat(document.getElementById(`strike-rate-${player}`).innerText),    
+            //         matchid : parseInt(document.getElementById(`match-id-${player}`).innerText),    
+            //     };
+
+            //     fetch('/save_data/', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'X-CSRFToken': getCookie('csrftoken'),
+            //         },
+            //         body: JSON.stringify(data),
+            //     })
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         if (response.status === 'success') {
+            //             console.log(`Data saved successfully for ${player}`);
+            //         } else {
+            //             console.error('Error saving data:', response.errors);
+            //         }
+            //     })
+            //     .catch(error => {
+            //         console.error('There was a problem with the fetch operation:', error);
+            //     });
+            // }
+
+
+            //     // Function to get CSRF token from cookie
+            // function getCookie(name) {
+            //     const value = `; ${document.cookie}`;
+            //     const parts = value.split(`; ${name}=`);
+            //     if (parts.length === 2) return parts.pop().split(';').shift();
+            // }
+
+
+
+
+
+
+
+
+
+
+
+
+            // Modified saveData function for "Close" button (saves to ClosedScore)
+
+            function closeScore(player) {
+                // Add code here to handle closing the score for the specified player
+
+                console.log(`Closing score for ${player}`);
+
+                // Optionally, you can add code to save data to ClosedScore here
+                const batsmanDropdown = document.getElementById(`${player}-dropdown`);
+                const selectedBatsman = batsmanDropdown.options[batsmanDropdown.selectedIndex].value;
+
+                const data = {
+                    batsman_name: selectedBatsman,
+                    runs: parseInt(document.getElementById(`runs-${player}`).innerText),
+                    balls: parseInt(document.getElementById(`balls-${player}`).innerText),
+                    ones: parseInt(document.getElementById(`ones-${player}`).innerText),
+                    twos: parseInt(document.getElementById(`twos-${player}`).innerText),
+                    threes: parseInt(document.getElementById(`threes-${player}`).innerText),
+                    fours: parseInt(document.getElementById(`fours-${player}`).innerText),
+                    sixes: parseInt(document.getElementById(`sixes-${player}`).innerText),
+                    wides: parseInt(document.getElementById(`wides-${player}`).innerText),
+                    leg_byes: parseInt(document.getElementById(`leg-byes-${player}`).innerText),
+                    no_balls: parseInt(document.getElementById(`no-balls-${player}`).innerText),
+                    dead_ball: parseInt(document.getElementById(`dead-ball-${player}`).innerText),
+                    strike_rate: parseFloat(document.getElementById(`strike-rate-${player}`).innerText),
+                    match_id: parseInt(document.getElementById(`match-id-${player}`).innerText),
+                    team_id: parseInt(document.getElementById(`team-id-${player}`).innerText),
+
+
+                };
+
+                // Save data to ClosedScore model
+                saveToClosedScore(data);
+                resetFields(player);
+
+                // Optional: Perform additional actions here if needed.
+            }
+
+            // Your other functions...
+
+
+            function saveDataForClosedScore(player) {
+                const batsmanDropdown = document.getElementById(`${player}-dropdown`);
+                const selectedBatsman = batsmanDropdown.options[batsmanDropdown.selectedIndex].value;
+
+                const data = {
+                    batsman_name: selectedBatsman,
+                    runs: parseInt(document.getElementById(`runs-${player}`).innerText),
+                    balls: parseInt(document.getElementById(`balls-${player}`).innerText),
+                    ones: parseInt(document.getElementById(`ones-${player}`).innerText),
+                    twos: parseInt(document.getElementById(`twos-${player}`).innerText),
+                    threes: parseInt(document.getElementById(`threes-${player}`).innerText),
+                    fours: parseInt(document.getElementById(`fours-${player}`).innerText),
+                    sixes: parseInt(document.getElementById(`sixes-${player}`).innerText),
+                    wides: parseInt(document.getElementById(`wides-${player}`).innerText),
+                    leg_byes: parseInt(document.getElementById(`leg-byes-${player}`).innerText),
+                    no_balls: parseInt(document.getElementById(`no-balls-${player}`).innerText),
+                    dead_ball: parseInt(document.getElementById(`dead-ball-${player}`).innerText),
+                    strike_rate: parseFloat(document.getElementById(`strike-rate-${player}`).innerText),
+                    match_id: parseInt(document.getElementById(`match-id-${player}`).innerText),
+                    team_id: parseInt(document.getElementById(`team-id-${player}`).innerText),
+
+
+                };
+
+                // Save data to ClosedScore model
+                saveToClosedScore(data);
+
+                // Optional: Perform additional actions here if needed.
+            }
+
+            function saveToClosedScore(data) {
+                fetch('/save_to_closed_score/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 'success') {
+                            console.log('Data saved to ClosedScore successfully');
+                            // Optional: Perform additional actions here if needed.
+                        } else {
+                            console.error('Error saving data to ClosedScore:', response.errors);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            }
+
+
+
+            function resetFields(player) {
+                document.getElementById(`runs-${player}`).innerText = '0';
+                document.getElementById(`balls-${player}`).innerText = '0';
+                document.getElementById(`ones-${player}`).innerText = '0';
+                document.getElementById(`twos-${player}`).innerText = '0';
+                document.getElementById(`threes-${player}`).innerText = '0';
+                document.getElementById(`fours-${player}`).innerText = '0';
+                document.getElementById(`sixes-${player}`).innerText = '0';
+                document.getElementById(`wides-${player}`).innerText = '0';
+                document.getElementById(`leg-byes-${player}`).innerText = '0';
+                document.getElementById(`no-balls-${player}`).innerText = '0';
+                document.getElementById(`dead-ball-${player}`).innerText = '0';
+                document.getElementById(`strike-rate-${player}`).innerText = '0';
+            }
+
+
+
+
+
+
+
+
+
+            $(document).ready(function () {
+                setInterval(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'getScores' %}",
+                        success: function (response) {
+                            $("#display").empty();
+
+                            for (var key in response.scores) {
+                                var batsmanRow = "<tr><td>" + response.scores[key].batsman_name + "</td>" +
+
+                                    "<td>" + response.scores[key].runs + "</td>" +
+                                    "<td>" + response.scores[key].balls + "</td>" +
+                                    "<td>" + response.scores[key].ones + "</td>" +
+                                    "<td>" + response.scores[key].twos + "</td>" +
+                                    "<td>" + response.scores[key].threes + "</td>" +
+                                    "<td>" + response.scores[key].fours + "</td>" +
+                                    "<td>" + response.scores[key].sixes + "</td>" +
+                                    "<td>" + response.scores[key].wides + "</td>" +
+                                    "<td>" + response.scores[key].leg_byes + "</td>" +
+                                    "<td>" + response.scores[key].strike_rate + "</td></tr>";
+
+                                $("#display").append(batsmanRow);
+                            }
+                        },
+                        error: function (response) {
+                            alert("No data found");
+                        }
+                    });
+                }, 1000);
+            });
+
+            // bowler view 
+            // Document ready function
+            $(document).ready(function () {
+                setInterval(function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'getBowlerScore' %}",
+                        success: function (response) {
+                            $("#displayBowler").empty();
+
+                            for (var key in response.scoresball) {
+                                var bowlerRow = "<tr><td>" + response.scoresball[key].name + "</td>" +
+                                    "<td>" + response.scoresball[key].overs + "</td>" +
+                                    "<td>" + response.scoresball[key].maidens + "</td>" +
+                                    "<td>" + response.scoresball[key].runs + "</td>" +
+                                    "<td>" + response.scoresball[key].wickets + "</td>" +
+                                    "<td>" + response.scoresball[key].economy + "</td>" +
+
+                                    $("#displayBowler").append(bowlerRow);
+                            }
+                        },
+                        error: function (response) {
+                            alert("No data found");
+                        }
+                    });
+                }, 1000);
+            });
+
+
+
+
+
+
+            // bowler script 
+
+
+
+            // // // Add event listeners for WD, LB, and DB buttons
+            // $("#wides-plus, #leg-byes-plus,#no-balls-plus, #dead-ball-plus").on('click', function () {
+            //     const selectedBatsman = $("input[name='batsman']:checked").val();
+            //     updateBowlerScores(selectedBatsman);
+            // });
+
+            // $("#wides-minus, #leg-byes-minus,#no-balls-minus, #dead-ball-minus").on('click', function () {
+            //     const selectedBatsman = $("input[name='batsman']:checked").val();
+            //     updateBowlerScores(selectedBatsman);
+            // });
+
+
+
+
+
+            // // Function to update bowler scores based on batsman scores
+            // function updateBowlerScores(player) {
+            //     const runs = parseInt($(`#runs-${player}`).text()) || 0;
+            //     let balls = parseInt($(`#balls-${player}`).text()) || 0;
+
+            //     // Increment the over count when balls reach 6
+            //     if (balls === 6) {
+            //         const overs = parseInt($(`#overs-${player}`).text()) || 0;
+            //         $(`#overs-${player}`).text(overs + 1);
+
+            //         // Reset the ball count to 0
+            //         // balls = 0;
+            //     }
+
+            //     // Update the scores for the selected batsman
+            //     batsmanScores[player] = {
+
+            //         runs: runs,
+            //         balls: balls
+
+            //     };
+
+            //     // Calculate total runs and balls for all batsmen
+            //     let totalRuns = 0;
+            //     let totalBalls = 0;
+
+            //     for (const batsman in batsmanScores) {
+            //         totalRuns += batsmanScores[batsman].runs;
+            //         totalBalls += batsmanScores[batsman].balls;
+            //     }
+
+            //     // Update the bowler row with the total scores and overs
+            //     $('#runs-bowler1').text(totalRuns);
+            //     $('#balls-bowler1').text(totalBalls);
+            //     $('#overs-bowler1').text(Math.floor(totalBalls / 6));
+            // }
+
+
+
+            // wickets as noball
+
+
+            function updateWicket(bowler, value) {
+                const wicketElement = document.getElementById(`wicket-${bowler}`);
+                let currentWickets = parseFloat(wicketElement.innerText) || 0;
+
+                // Update the current value
+                currentWickets += value;
+
+                // Ensure the value is not less than 0
+                currentWickets = Math.max(currentWickets, 0);
+
+                // Update the displayed value
+                wicketElement.innerText = currentWickets.toFixed(0);
+            }
+
+
+
+
+
+
+
+
+            // noball update
+
+            function updateMaidenOver(bowler, value) {
+
+                const maidenOversElement = document.getElementById(`maiden-overs-${bowler}`);
+                let currentMaidenOvers = parseFloat(maidenOversElement.innerText) || 0;
+
+
+                currentMaidenOvers += value;
+
+
+                currentMaidenOvers = Math.max(currentMaidenOvers, 0);
+
+
+                maidenOversElement.innerText = currentMaidenOvers.toFixed(0);
+            }
+
+
+
+
+
+
+
+            // save bowler script
+
+            var currentBowler = "";
+
+            function getBowler(value) {
+                currentBowler = value;
+            }
+
+
+            function saveBowlerData(bowlerId) {
+                // const bowlerDropdown = document.getElementById(`${bowlerId}-dropdown`);
+                // const selectedBowler = bowlerDropdown.options[bowlerDropdown.selectedIndex].value;
+                console.log(`bowlerId: ${bowlerId}`);
+                console.log(`runs: ${document.getElementById(`runs-${bowlerId}`).innerText}`);
+                const selectedBowler = currentBowler
+
+                const data = {
+                    bowler: selectedBowler,
+                    runs: parseInt(document.getElementById(`runs-${bowlerId}`).innerText),
+                    balls: parseInt(document.getElementById(`balls-${bowlerId}`).innerText),
+                    maidenOvers: parseInt(document.getElementById(`maiden-overs-${bowlerId}`).innerText),
+                    // noBalls: parseInt(document.getElementById(`no-balls-${bowlerId}`).innerText),
+                    wickets: parseInt(document.getElementById(`wicket-${bowlerId}`).innerText),
+                    overs: parseFloat(document.getElementById(`overs-${bowlerId}`).innerText),
+                    match_id: parseInt(document.getElementById(`match-id-${bowlerId}`).innerText),
+                    team_id: parseInt(document.getElementById(`team-id-${bowlerId}`).innerText),
+
+
+
+                };
+
+                fetch('/update_bowler_data/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 'success') {
+                            console.log(`Bowler data saved successfully! for ${bowlerId}`);
+                        } else {
+                            console.error('Error saving bowler data:', response.errors);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+
+            }
+
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+
+
+
+
+
+
+            // transfer bowler data
+
+
+
+            var currentBowler = "";
+
+            function getBowler(value) {
+                currentBowler = value;
+            }
+
+
+            function transferBowlerData(bowlerId) {
+                const selectedBowler = currentBowler;
+
+                const data = {
+                    bowler_name: selectedBowler,
+                    runs: parseInt(document.getElementById(`runs-${bowlerId}`).innerText),
+                    balls: parseInt(document.getElementById(`balls-${bowlerId}`).innerText),
+                    maidenOver: parseInt(document.getElementById(`maiden-overs-${bowlerId}`).innerText),
+                    // noBalls: parseInt(document.getElementById(`no-balls-${bowlerId}`).innerText),
+                    wickets: parseInt(document.getElementById(`wicket-${bowlerId}`).innerText),
+                    overs: parseFloat(document.getElementById(`overs-${bowlerId}`).innerText),
+                    match_id: parseInt(document.getElementById(`match-id-${bowlerId}`).innerText),
+                    team_id: parseInt(document.getElementById(`team-id-${bowlerId}`).innerText),
+
+
+                };
+                resetBowlerFields(bowlerId)
+
+
+                fetch('/transfer_bowler_data/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 'success') {
+                            console.log(`Bowler data saved successfully! for ${bowlerId}`);
+                        } else {
+                            console.error('Error saving bowler data:', response.errors);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                    });
+            }
+
+
+
+
+            function resetBowlerFields(bowlerId) {
+                
+                // document.getElementById(`runs-${bowlerId}`).innerText = '0';
+                // document.getElementById(`balls-${bowlerId}`).innerText = '0';
+                // document.getElementById(`maiden-overs-${bowlerId}`).innerText = '0';
+                // document.getElementById(`no-balls-${bowlerId}`).innerText = '0';
+                // document.getElementById(`wicket-${bowlerId}`).innerText = '0';
+                document.getElementById(`overs-${bowlerId}`).innerText = '0';
+            }
+
+
+
+
+            // commentary save 
+
+            document.querySelector("#popup1 .swal-button--confirm").addEventListener("click", function () {
+                // Get the selected values
+                var selectOption = document.getElementById("stumpled-dropdown");
+                var selectBowler = document.getElementById("bowler1-dropdown");
+                var selectbatsman = document.getElementById("batsman-dropdown")
+
+                // Check if the option is selected
+                if (selectOption.value) {
+                    // Send the data to the server using AJAX
+                    sendDataToServer(selectOption.value, selectBowler.value, selectbatsman.value);
+                }
+            });
+
+            function sendDataToServer(outMode, outTookPlayer, BatsmanSelected) {
+                // Send AJAX request to Django backend
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/save-live-score/", true);  // Updated URL
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+                // Prepare data
+                var data = {
+                    selected_option: outMode,  // Match the keys to Django views.py
+                    selected_player: outTookPlayer,
+                    selectedbatsman: BatsmanSelected,
+                };
+
+                // Convert data to JSON format
+                var jsonData = JSON.stringify(data);
+
+                // Send the request
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            // Success, you can handle the response if needed
+                            console.log('Data saved successfully');
+                        } else {
+                            // Handle errors
+                            console.error('Error saving data');
+                        }
+                    }
+                };
+
+                xhr.send(jsonData);
+            }
+
+
+
+
+
+            // second half
+
+
+
+
+
+            $(document).ready(function () {
+                $("#secondHalfButton").on("click", function () {
+                    // Fetch the CSRF token
+                    var csrftoken = getCookie('csrftoken');
+
+                    // Send AJAX request to your Django view
+                    $.ajax({
+                        type: "POST",
+                        url: "/second_half_notification/",  // Replace with your actual URL
+                        headers: {
+                            "X-CSRFToken": csrftoken
+                        },
+                        success: function (data) {
+                            // Handle success, e.g., display a success message
+                            console.log("Second half button clicked:", data);
+                        },
+                        error: function (error) {
+                            // Handle errors, e.g., display an error message
+                            console.error("Error during second half notification:", error);
+                        }
+                    });
+                });
+
+                // Function to fetch the CSRF token from cookies
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+            });
+
+
+
+            // $("[name='reselectiontoss']").on("click", function() {
+            //     var csrftoken = getCookie('csrftoken');
+
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "{% url 'adminscoreupdate' match.id %}",
+            //         headers: {
+            //             "X-CSRFToken": csrftoken
+            //         },
+            //         success: function(data) {
+            //             console.log("Second half button clicked:", data);
+
+            //             // Check if switching was successful
+            //             if (data.data && data.data.switched) {
+            //                 console.log("Batsmen and bowler switched successfully.");
+            //                 // Now, you can update your UI or take additional actions
+            //             }
+            //         },
+            //         error: function(error) {
+            //             console.error("Error during second half notification:", error);
+            //         }
+            //     });
+            // });
+
+            // // Function to fetch the CSRF token from cookies
+            // function getCookie(name) {
+            //     var cookieValue = null;
+            //     if (document.cookie && document.cookie !== '') {
+            //         var cookies = document.cookie.split(';');
+            //         for (var i = 0; i < cookies.length; i++) {
+            //             var cookie = cookies[i].trim();
+            //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            //                 break;
+            //             }
+            //         }
+            //     }
+            //     return cookieValue;
+            // }
+
+
+
+
+
+            $("[name='reselectiontoss']").on("click", function () {
+                var csrftoken = getCookie('csrftoken');
+
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'adminscoreupdate' match.id %}",
+                    headers: {
+                        "X-CSRFToken": csrftoken
+                    },
+                    success: function (data) {
+                        console.log("Button clicked - Server Response:", data);
+
+                        // Check if switching was successful
+                        if (data && data.data && data.data.switched) {
+                            console.log("Switched successfully.");
+
+                            // Update team IDs
+                            updateTeamIds(data.data.team1, data.data.team2);
+
+                            // Update multiple player dropdowns
+                            updatePlayerDropdown('batsman1-dropdown', data.data.batsmen);
+                            updatePlayerDropdown('batsman2-dropdown', data.data.batsmen);
+                            updatePlayerDropdown('bowler1-dropdown', data.data.bowler);
+
+                            // Additional logic to update other bowler-related elements if necessary
+                            updateBowlerElements();
+                        } else {
+                            console.log("Switching failed or no data received.");
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error during button click:", error);
+                    }
+                });
+            });
+
+            function updateTeamIds(team1, team2) {
+                window.alert(team1)
+
+                $("#team-id-batsman1").text(team1);
+                $("#team-id-bowler1").text(team2);
+
+
+            }
+
+
+            // Function to update bowler-related elements
+            function updateBowlerElements() {
+                // Additional logic to update any other bowler-related elements if necessary
+                // For example, you might want to reset certain values or update other UI elements
+                // ...
+            }
+
+            // Function to update player dropdown options
+            function updatePlayerDropdown(dropdownId, players) {
+                $("#" + dropdownId).empty(); // Clear existing options
+                $.each(players, function (index, player) {
+                    $("#" + dropdownId).append('<option value="' + player.Player_name + '">' + player.Player_name + '</option>');
+                });
+            }
+
+            // Function to fetch the CSRF token from cookies
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+
+
+
+
+
+            // $(document).ready(function() {
+            //     $("#secondHalfButton").on("click", function() {
+            //         // Fetch the CSRF token
+            //         var csrftoken = getCookie('csrftoken');
+
+            //         // Retrieve the matchID from local storage
+            //         var matchID = localStorage.getItem('matchID');
+
+            //         // First AJAX request with matchID
+            //         $.ajax({
+            //             type: "POST",
+            //             url: "/adminscoreupdate/" + matchID + "/",  // Use the dynamically constructed URL for the first request
+            //             headers: {
+            //                 "X-CSRFToken": csrftoken
+            //             },
+            //             success: function(data) {
+            //                 // Handle success for the first request
+            //                 console.log("First view function response:", data);
+            //             },
+            //             error: function(error) {
+            //                 // Handle errors for the first request
+            //                 console.error("Error during first view function:", error);
+            //             }
+            //         });
+
+            //         // Second AJAX request with matchID
+            //         $.ajax({
+            //             type: "POST",
+            //             url: "/second_half_notification/",  // Replace with your actual URL for the second request
+            //             headers: {
+            //                 "X-CSRFToken": csrftoken
+            //             },
+            //             data: { matchID: matchID },  // Include matchID in the request data
+            //             success: function(data) {
+            //                 // Handle success for the second request
+            //                 console.log("Second view function response:", data);
+            //             },
+            //             error: function(error) {
+            //                 // Handle errors for the second request
+            //                 console.error("Error during second view function:", error);
+            //             }
+            //         });
+            //     });
+
+            //     // Function to fetch the CSRF token from cookies
+            //     function getCookie(name) {
+            //         var cookieValue = null;
+            //         if (document.cookie && document.cookie !== '') {
+            //             var cookies = document.cookie.split(';');
+            //             for (var i = 0; i < cookies.length; i++) {
+            //                 var cookie = cookies[i].trim();
+            //                 // Does this cookie string begin with the name we want?
+            //                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            //                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            //                     break;
+            //                 }
+            //             }
+            //         }
+            //         return cookieValue;
+            //     }
+            // });
+
+
+
+        </script>
+
+
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script> -->
+
+
+</body>
+
+</html>

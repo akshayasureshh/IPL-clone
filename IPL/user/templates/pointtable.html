@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL|point table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/boot">
+    <link rel="website icon" type="png/jpg" href="images/logo-icon.webp">
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700;800&family=Raleway:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- header section start -->
+
+    <div class="team-detail-banner">
+        <div class="container">
+            {% include 'navbar.html' %}
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="team-dtl-sctn-smal-dtl-bx" style="margin-top: 100px;">
+                    <div class="col-md-12">
+                        <h1>POINT TABLE</h1>
+
+                        <p class="flip"><span class="deg1"></span><span class="deg2"></span><span class="deg3"></span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- point table section start -->
+
+    <section>
+        <div class="point-table-sctn">
+            <div class="container">
+
+
+                <div class="row">
+
+                    <!-- drop down section end -->
+
+                    <!-- point trable start -->
+
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="point-table">
+                                <thead>
+                                    <tr class="point-tbl-1st-tr">
+                                        <th>POS </th>
+                                        <th>TEAM </th>
+                                        <th>M </th>
+                                        <th>W </th>
+                                        <th>L </th>
+                                        <th> NR</th>
+                                        <th> NRR</th>
+                                        <th>PTS </th>
+                                        <th> RECENT FORM</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for team_name in teams_with_points %}
+                                    <tr>
+                                        <td>{{team_name.team_id}}</td>
+                                        <td class="point-tbl-team-td">
+                                            <div class="point-tbl-team-td-bx">
+                                                <div class="point-tbl-team-td-tm-lgo">
+                                                    <img src="{{ team_name.team_logo.url }}" alt="">
+                                                </div>
+                                                <h3 class="m-0">{{ team_name.team_name }}</h3>
+                                                <div class="point-tbl-team-td-qlfd-icn">
+                                                    <img src="{% static 'images/Untitled-2.png' %}" alt="">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{team_name.matches_count}}</td>
+                                        <td>{{team_name.matches_won_count}}</td>
+                                        <td>{{team_name.matches_lost_count}}</td>
+                                        <td>0</td>
+                                        <td>0.89</td>
+                                        <td>{{team_name.total_points}}</td>
+                                        <td>
+                                            <div class="point-tbl-team-recent-frm">
+                                                <span class="loss">L</span>
+                                                <span class="loss">L</span>
+                                                <span class="loss">L</span>
+                                                <span class="loss">L</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- point trable start -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section start -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section end -->
+
+    <!-- js -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/style.js"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

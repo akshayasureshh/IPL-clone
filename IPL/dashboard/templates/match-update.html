@@ -1,0 +1,74 @@
+{% extends "dashboard.html" %}
+
+
+{% block content %}
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                Dashboard
+            </h3>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Update Matched Teams  Details</h4>
+                        <p class="card-description">
+                            Update Match
+                        </p>
+                        {{ form.as_p }}
+                        <a  class="btn btn-primary mr-2" href="#popup133">Update</a>
+                       
+                        <div id="popup133" class="overlay">
+                            <div class="popup">
+
+                                <div class="swal-icon swal-icon--success">
+                                    <span
+                                        class="swal-icon--success__line swal-icon--success__line--long"></span>
+                                    <span
+                                        class="swal-icon--success__line swal-icon--success__line--tip"></span>
+
+                                    <div class="swal-icon--success__ring"></div>
+                                    <div class="swal-icon--success__hide-corners"></div>
+                                </div>
+
+
+                                <a class="close" href="#">&times;</a>
+                                <div class="content">
+                                    <div class="swal-title">congradulation</div>
+                                    <div class="swal-text" style="display: block; text-align: center;">
+                                        Match Updation is Successfuly complated</div>
+                                </div>
+
+                                <div class="swal-footer">
+                                    <div class="swal-button-container">
+
+                                        <button type="reset" onclick="history.back()"
+                                            class="swal-button swal-button--cancel btn btn-danger">Cancel</button>
+
+                                        <div class="swal-button__loader">
+                                            <div></div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="swal-button-container">
+
+                                        <button type="submit"
+                                            class="swal-button swal-button--confirm btn btn-primary">OK</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

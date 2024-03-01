@@ -1,0 +1,56 @@
+{% extends 'dashboard.html' %}
+
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                Created Tournaments
+            </h3>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th>Date</th>
+                                <th>Team 1</th>
+                                <th>Team 2</th>
+                                <th>Ground </th>
+                                <th>Match</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in matches %}
+                            <tr>
+                                <td>{{match.Match_date}}</td>
+                                <td class="fxtr-upmng-team-logo"><img
+                                        src="{{match.TeamA.Team_logo.url}}" alt=""
+                                        srcset="">{{match.TeamA}}</td>
+                                <td class="fxtr-upmng-team-logo"> <img
+                                        src="{{match.TeamB.Team_logo.url}}" alt=""
+                                        srcset="">{{match.TeamB}}</td>
+                                <td>{{match.Ground_name}}</td>
+                                <td>{{match.Match_type}}</td>
+
+                                <td class="text-right">
+                                    <a class="btn btn-light" href="{% url 'player-selected' match.id %}">
+                                        <i class="fa fa-edit text-primary"></i>Select Players
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

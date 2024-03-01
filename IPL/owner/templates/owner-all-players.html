@@ -1,0 +1,61 @@
+{% extends 'owner-dashboard.html' %}
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                {{user.name}}
+            </h3>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table id="order-listing" class="table">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th>Name</th>
+                                <th>Image</th>
+                                <th>Email</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in players %}
+                            <tr>
+                                <td>{{player.Player_name}}</td>
+                                <td class="py-1">
+                                    <img src="{{player.Player_logo.url}}" alt="" srcset="">
+                                </td>
+                                <td>{{player.Player_email}}</td>
+                                <td>
+                                    <a href="{% url 'player_update' player.id %}" class="btn btn-dark btn-fw">
+                                        <i class="fas fa-pencil-alt"></i>
+                                        Update</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'player_delete' player.id %}" class="btn btn-danger btn-fw">
+                                        <i class="fas fa-trash"></i>
+                                        Delete</a>
+                                </td>
+                               
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+
+    <!-- partial -->
+</div>
+
+
+{% endblock content %}

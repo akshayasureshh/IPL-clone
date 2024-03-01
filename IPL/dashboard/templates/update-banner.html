@@ -1,0 +1,37 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{message.tags}}" {% endif %} style="list-style: none;">
+                        {{message}}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="card-title">Carousal</h4>
+                    <p class="card-description">
+                        Carousal  with indicators and navigation
+                    </p>
+                    <form class="forms-sample" method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                        <button type="reset" class="btn btn-light">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

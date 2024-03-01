@@ -1,0 +1,50 @@
+{% extends "dashboard.html" %}
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                add Team
+            </h3>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{{message.tags}}" {% endif %} style="list-style: none;"></li>
+                                {{message}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {%  endif  %}
+                        <h4 class="card-title">Register Team Details</h4>
+                        <p class="card-description">
+                            Register Team
+                        </p>
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+    <footer class="footer">
+        <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018 .
+                All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made
+                with <i class="far fa-heart text-danger"></i></span>
+        </div>
+    </footer>
+    <!-- partial -->
+</div>
+{% endblock content %}

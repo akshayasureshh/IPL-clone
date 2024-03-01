@@ -1,0 +1,99 @@
+{% extends "dashboard.html" %}
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                Create Team
+            </h3>
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Register Team Details</h4>
+                        <p class="card-description">
+                            Register Team
+                        </p>
+                        {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{message.tags}}" {% endif %}>{{message}}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {%  endif  %}
+                        <form class="forms-sample" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="exampleInputName1">Date And Time</label>
+                                <input type="datetime-local" name="date" class="form-control"
+                                    id="exampleInputName1" placeholder="Date And Time" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Season Name</label>
+                                <select name="season" id="exampleInputEmail3" class="form-control">
+                                    <option value="" id="exampleInputEmail3" class="form-control">-selecte
+                                        player-</option>
+                                    {% for season in seasons %}
+                                    <option value="{{season.id}}" id="exampleInputEmail3"
+                                        class="form-control">{{season.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Match Type</label>
+                                <input type="text" class="form-control" name="type" id="exampleInputEmail3"
+                                    placeholder="match type" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Ground Name </label>
+                                <input type="text" class="form-control" name="ground"
+                                    id="exampleInputEmail3" placeholder="Ground name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Team One</label>
+                                <select name="team1" id="exampleInputEmail3" class="form-control">
+                                    <option value="" id="exampleInputEmail3" class="form-control">-selecte
+                                        player-</option>
+                                    {% for team in teams %}
+                                    <option value="{{team.id}}" id="exampleInputEmail3"
+                                        class="form-control">{{team.Team_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail3">Team Two</label>
+                                <select name="team2" id="exampleInputEmail3" class="form-control">
+                                    <option value="" id="exampleInputEmail3" class="form-control">-selecte
+                                        player-</option>
+                                    {% for team in teams %}
+                                    <option value="{{team.id}}" id="exampleInputEmail3"
+                                        class="form-control">{{team.Team_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button class="btn btn-light" type="reset">Cancel</button>
+                        </form>
+                    </div>
+                    <!-- content-wrapper ends -->
+                    <!-- partial:partials/_footer.html -->
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+{% endblock content %}

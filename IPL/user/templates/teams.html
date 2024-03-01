@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL | Teams</title>
+    <link rel="website icon" type="png/jpg" href="images/logo-icon.webp">
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700;800&family=Raleway:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <!--  -->
+
+    <!-- HEADER  section start-->
+
+    <header>
+        <div class="team-banner">
+            <div class="container">
+                <div class="row">
+                    {% include 'navbar.html' %}
+                    <div class="col-md-12">
+                        <div class="team-sctn-banner-logo">
+                            <div>
+                                <img src="{% static 'images/logo.png' %}" alt="" style="width: 500px; height: 300px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- header section end -->
+
+    <!-- Team section start -->
+
+
+
+    <section>
+        <div class="team-sectino">
+            <div class="container">
+                <div class="row">
+                    <div class="vn-teamswrap ">
+                        <div class="vn-teamsInner">
+
+                            <ul class="vn-teamsInnerWrp mb-0">
+                                {% for team in teams %}
+                                <li class="Tm_bx">
+                                    <a onclick="click_teams1(this)" data-event_context="team" 
+                                        data-team_name="Chennai Super Kings" class="w-100"
+                                        href="{% url 'player_detail' team.id %}" tabindex="0">
+                                        <div class="d-flex flex-wrap justify-content-center">
+                                            <div class="vn-team-logo">
+                                                <img src="{{ team.Team_logo.url }}" alt="" />
+                                            </div>
+                                            <div class="vn-team-logo-onhover">
+                                                <img src="{{ team.Team_logo.url }}" alt="">
+                                                <span>KT</span>
+                                            </div>
+                                            <div class="ap-team-contn col-100">
+                                                <h3 class="mb-0">{{ team.Team_name }}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="team-on-hover">
+                                            <img src="https://www.iplt20.com/assets/images/teams-trophy.svg" alt="">
+                                            <div class="trophy-text-align">2010 | 2011 | 2018 | 2021 | 2023</div>
+                                        </div>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Team section end -->
+
+    <!-- footer section start -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section end -->
+
+    <!-- js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

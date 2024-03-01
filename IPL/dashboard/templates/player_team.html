@@ -1,0 +1,107 @@
+{% extends 'dashboard.html' %}
+
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                Dashboards
+            </h3>
+        </div>
+        <div class=" grid-margin">
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <div class="card container">
+
+
+                    <section>
+                        <div class="row card-body">
+                            <h4 class="card-title">{{team.TeamA}}</h4>
+                            <div class="col-md-12">
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-check">
+
+                                                {% for player in team1 %}
+                                                
+                                                    <label for="player_list{{player.id}}" class="add_players_check">
+                                                        <input id="player_list{{player.id}}" type="checkbox" value="{{player.id}}"
+                                                            name="team1" class="form-check-input">
+                                                       {{player.Player_name}}
+    
+                                                        <i class="input-helper"></i></label>
+                                               
+                                                {% endfor %}
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- <button type="submit" class="btn btn-primary mr-2">Submit</button> -->
+
+
+                            </div>
+
+
+
+                        </div>
+                    </section>
+                    <section>
+                        <div class="row card-body">
+                            <h4 class="card-title">{{team.TeamB}}</h4>
+                            <div class="col-md-12">
+
+                                <!-- <form action="" method="post"> -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="form-check">
+
+
+                                                {% for player in team2 %}
+                                               
+                                                    <label for="player_list{{player.id}}" class="add_players_check">
+                                                        <input id="player_list{{player.id}}" type="checkbox" value="{{player.id}}"
+                                                            name="team2" class="form-check-input">
+                                                       {{player.Player_name}}
+    
+                                                        <i class="input-helper"></i></label>
+                                               
+                                                {% endfor %}
+
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+                            </div>
+
+
+
+                        </div>
+                    </section>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

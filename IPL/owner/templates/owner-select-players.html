@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Melody Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="{% static 'css/font-awesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vendor.bundle.addons.css' %}">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <!-- endinject -->
+    <style>
+        label {
+            display: inline-block;
+        }
+
+        .form-group label {
+            font-size: 0.8125rem;
+            line-height: 1;
+            vertical-align: top;
+            margin-bottom: .5rem;
+        }
+
+        .swal-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .swal-title:first-child {
+            margin-top: 0;
+        }
+
+        .swal-title:not(:last-child) {
+            margin-bottom: 0;
+        }
+
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+            z-index: 9999;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 500ms;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .overlay:target {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .popup {
+            margin: 70px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            width: 30%;
+            top: 10%;
+            position: relative;
+            transition: all 600ms ease-in-out;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+            color: #333;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        .popup .close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            transition: all 200ms;
+            font-size: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .popup .close:hover {
+            color: #06D85F;
+        }
+
+        .popup .content {
+            max-height: 30%;
+            overflow: auto;
+        }
+
+        .add_players_check {
+            vertical-align: top;
+            background: #dfd7ff;
+            padding: 7px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 2px;
+            color: #000;
+            font-weight: 600;
+
+        }
+
+        .add_players_check input[type="radio"],
+        input[type="checkbox"] {
+            padding: 0;
+            width: 17px;
+            height: 14px;
+            padding: 0;
+            margin: 0;
+            vertical-align: bottom;
+            position: relative;
+            top: -1px;
+        }
+    </style>
+
+    </body>
+</head>
+
+<body>
+    <div class="main-panel" style="width: 100%;">
+        <div class="content-wrapper">
+            <div class="page-header" style="justify-content: center;">
+                <h3 class="page-title">
+                    {{user.name}}
+                </h3>
+            </div>
+            <div class=" grid-margin">
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    <div class="card container">
+
+
+                        <section>
+                            <div class="row card-body">
+                                <h4 class="card-title">{{user.team}}</h4>
+                                <div class="col-md-12">
+
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="form-check">
+
+                                                    {% for player in players %}
+
+                                                    <label for="player_list{{player.id}}" class="add_players_check">
+                                                        <input id="player_list{{player.id}}" type="checkbox"
+                                                            value="{{player.id}}" name="team" class="form-check-input">
+                                                        {{player.Player_name}}
+
+                                                        <i class="input-helper"></i></label>
+
+                                                    {% endfor %}
+
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+
+
+                                </div>
+
+
+
+                            </div>
+                        </section>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="{% static 'js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'js/vendor.bundle.addons.js' %}"></script>
+    <script src="{% static 'js/off-canvas.js' %}"></script>
+    <script src="{% static 'js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'js/misc.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/todolist.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+    <script src="{% static 'js/alerts.js' %}"></script>
+    <script src="{% static 'js/toastDemo.js' %}"></script>
+
+</body>
+
+
+</html>

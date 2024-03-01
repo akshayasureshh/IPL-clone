@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL-Player</title>
+    <link rel="website icon" type="png/jpg" href="images/logo-icon.webp">
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700;800&family=Raleway:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- header section start -->
+
+    <div class="team-detail-banner">
+        <div class="container">
+
+            {% include 'navbar.html' %}
+            <div class="container">
+                <div class="row">
+                    <div class="team-dtl-sctn-smal-dtl-bx" style="margin-top: 100px;">
+                        <div class="col-md-12">
+                            <h1>{{player.Player_team}}</h1>
+
+                            <p class="flip"><span class="deg1"></span><span class="deg2"></span><span
+                                    class="deg3"></span>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <section>
+                <div class="plyr-dtl-sctn-plyr-basic-bx mt-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="plyr-dtl-sctn-plyr-basic-bx-img-bx">
+                                <div>
+                                    <img src="{{player.Player_logo.url}}" alt="">>
+                                    <div class="plyr-dtl-sctn-plyr-basic-bx-img-bx-name">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="plyr-dtl-sctn-plyr-basic-bx-dtl-bx">
+                                <div>
+                                    <!-- <h2>Player Over-View</h2> -->
+                                    <div class="plyr-dtl-sctn-plyr-basic-bx-dtl-bx-rw">
+                                        <div>
+                                            {{player.Player_name}}
+                                        </div>
+                                    </div>
+
+                                    <div class="plyr-dtl-sctn-plyr-basic-bx-dtl-bx-rw">
+                                        <div>
+                                            Specialization - {{player.Player_category}}
+                                        </div>
+                                    </div>
+                                    <div class="plyr-dtl-sctn-plyr-basic-bx-dtl-bx-rw">
+                                        <div>
+                                            <span>Matches - {{matches_played_count}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="plyr-dtl-sctn-plyr-basic-bx-dtl-bx-rw">
+                                        <div>
+                                            Total Run - {{total_runs}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+
+    <!--batter pointable section start-->
+
+
+
+    <!--boller pointable section end-->
+
+    <section>
+        <div class="plyr-dtl-batter-table-section">
+            <div class="container">
+                <h2>Batting & Fielding Stats</h2>
+                <!-- <div class="plyr-dtl-batter-table-section-bx"> -->
+                <div class="table-responsive">
+                    <table class="plyr-dtl-batter-table-section-bx">
+                        <thead>
+                            <tr>
+                                <th>YEAR</th>
+                                <th>MAT</th>
+                                <th>NO</th>
+                                <th>RUNS</th>
+                                <th>HS</th>
+                                <th>AVG</th>
+                                <th>BF</th>
+                                <th>SR</th>
+                                <th>100</th>
+                                <th>50</th>
+                                <th>4S</th>
+                                <th>6S</th>
+                                <th>CT</th>
+                                <th>ST</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td>2023</td>
+                                <td>{{batsman_played_count}}</td>
+                                <td>-</td>
+                                <td>{{batsman_total_runs}}</td>
+                                <td>{{player_highest_score.runs}}</td>
+                                <td>15.3</td>
+                                <td>415</td>
+                                <td>9.5</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>{{player_fours}}</td>
+                                <td>{{player_sixes}}</td>
+                                <td>43</td>
+                                <td>{{batsman_total_strike_rights}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section>
+        <div class="plyr-dtl-batter-table-section">
+            <div class="container">
+                <h2>Bowling</h2>
+                <!-- <div class="plyr-dtl-batter-table-section-bx"> -->
+                <div class="table-responsive">
+                    <table class="plyr-dtl-batter-table-section-bx">
+                        <thead>
+                            <tr>
+                                <th>YEAR</th>
+                                <th>MAT</th>
+                                <th>BALL</th>
+                                <th>RUNS</th>
+                                <th>WKTS</th>
+                                <th>BBM</th>
+                                <th>AVE</th>
+                                <th>ECON</th>
+                                <th>SR</th>
+                                <th>4W</th>
+                                <th>SW</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2023</td>
+                                <td>{{matches_played_count}}</td>
+                                <td>{{avg_balls_count}}</td>
+                                <td>{{total_runs}}</td>
+                                <td>{{avg_wickets_count}}</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section start -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section end -->
+
+    <!-- js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

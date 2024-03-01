@@ -1,0 +1,44 @@
+{% extends "dashboard.html" %}
+
+
+
+{% block content %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="page-header">
+            <h3 class="page-title">
+                Start Tournament Toss Selection
+            </h3>
+        </div>
+        <form class="forms-sample" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputUsername1">Team Toss Selection</label>
+                <select name="win1" class="form-control" id="exampleInputEmail1">
+                    <option value="">-select team-</option>
+
+                    <option value="{{team.TeamA}}">{{team.TeamA}}</option>
+                    <option value="{{team.TeamB}}">{{team.TeamB}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Select Your Choice</label>
+                <select name="choice" class="form-control">
+                    <option value="">-Toss-</option>
+                    <option value="1">Open To Bowling</option>
+                    <option value="2">Open To Bating</option>
+                </select>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+            <a href="{% url 'adminscoreupdate' team.id %}" class="btn btn-primary mr-2">Start Match</a>
+
+        </form>
+        <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+</div>
+
+{% endblock content %}

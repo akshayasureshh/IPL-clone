@@ -1,0 +1,112 @@
+{% extends "dashboard.html" %}
+
+
+{% block content %}
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Teams Table</h4>
+                        <div class="row">
+                            <div class="table-sorter-wrapper col-lg-12 table-responsive">
+                                <table id="sortable-table-1" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>id</th>
+                                            <th class="sortStyle">Name</th>
+                                            <th class="sortStyle">Logo</th>
+                                            <th class="sortStyle">Team</th>
+                                            <th class="sortStyle">Category</th>
+                                            <th class="sortStyle">Location</th>
+                                            <th class="sortStyle">Address</th>
+                                            <th class="sortStyle">Email</th>
+                                            <th class="sortStyle">Phone</th>
+                                            <th class="sortStyle">Update</th>
+                                            <th class="sortStyle">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for player in palyers %}
+
+                                        <tr>
+                                            <td>{{player.id}}</td>
+                                            <td>{{player.Player_name}}</td>
+                                            <td class="py-1">
+                                                <img src="{{player.Player_logo.url}}" alt="image">
+                                            </td>
+                                            <td>{{player.Player_team}}</td>
+                                            <td>{{player.Player_category}}</td>
+                                            <td>{{player.Player_location}}</td>
+                                            <td>{{player.Player_address}}</td>
+                                            <td>{{player.Player_email}}</td>
+                                            <td>{{player.Player_phone_number}}</td>
+                                            <td>
+                                                <a href="{% url 'update-player' player.id %}"
+                                                    class="btn btn-dark btn-fw">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                    Update</a>
+                                            </td>
+                                            <td>
+                                                <a href="#popup1{{ player.id }}" class="btn btn-danger btn-fw">
+                                                    <i class="fas fa-trash"></i>Delete</a>
+                                                <div id="popup1{{ player.id }}" class="overlay">
+                                                    <div class="popup">
+
+                                                        <div class="swal-icon swal-icon--warning">
+                                                            <span class="swal-icon--warning__body">
+                                                                <span class="swal-icon--warning__dot"></span>
+                                                            </span>
+                                                        </div>
+
+
+                                                        <a class="close" href="#">&times;</a>
+                                                        <div class="content">
+                                                            <div class="swal-title">Are you sure?</div>
+                                                            <div class="swal-text"
+                                                                style="display: block; text-align: center;">This data is
+                                                                delete</div>
+                                                        </div>
+
+                                                        <div class="swal-footer">
+                                                            <div class="swal-button-container">
+
+                                                                <button type="reset" onclick="history.back()"
+                                                                    class="swal-button swal-button--cancel btn btn-danger">Cancel</button>
+
+                                                                <div class="swal-button__loader">
+                                                                    <div></div>
+                                                                    <div></div>
+                                                                    <div></div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="swal-button-container">
+
+                                                                <a class="swal-button swal-button--confirm btn btn-primary"
+                                                                    href="{% url 'delete-player' player.id %}">OK</a>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

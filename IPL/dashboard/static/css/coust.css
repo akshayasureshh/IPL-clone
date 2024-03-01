@@ -1,0 +1,26 @@
+
+
+@media(min-width: 320px) and (max-width: 425px) {
+    body {
+        overflow-x: hidden;
+    }
+.team-name {
+    font-size: 12px !important;
+}
+
+.team-plyer-selct-no-sec {
+    font-size: 12px  !important;
+}
+.select-no-bx {
+    padding: 1px 4px ;
+    font-size: 13px !important;
+}
+.match-players-add-bx form label{
+    font-size: 13px !important;
+}
+.submit-bhutn {
+    background-color: rgb(255, 255, 255);
+    padding: 5px 50px !important;
+ 
+}
+}

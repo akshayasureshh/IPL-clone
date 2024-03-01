@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL</title>
+    <link rel="stylesheet" href="{% static 'css/customstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;600;700;800&family=Raleway:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- header section start -->
+
+    <div class="team-detail-banner">
+        <div class="container">
+
+            {% include 'navbar.html' %}
+
+            <!-- team -smal -detail-sectin -->
+            <section>
+                <div class="team-dtl-sctn-smal-dtl-bx">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="team-detail-pge-banner-detail-team">
+                                    <div>
+                                        <div class="team-detail-pge-banner-detail-team-logo">
+                                            <div>
+                                                <img src="{{team.Team_logo.url}}" style="width: 200px;" alt="">
+
+                                            </div>
+                                        </div>
+                                        <div class="team-detail-pge-banner-detail-team-text">
+                                            <h2>{{team.Team_name}}</h2>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="team-club-detail">
+                                    <p><span>OWNER</span>
+                                        <b>-</b>
+                                        {{team.Team_name}}
+                                    </p>
+                                    <p><span>COACH</span>
+                                        <b>-</b>
+                                        EBRAHAM
+                                    </p>
+                                    <p><span>CAPTAIN</span>
+                                        <b>-</b>
+                                        AKSHAY KRISHNA
+                                    </p>
+                                </div>
+                                <div class="team-detail-pge-banner-detail-team-text">
+                                    <img src="images/teams-trophy.svg" alt="">
+                                    <span>2010 | 2011 | 2018 | 2021 | 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- team banner slider section -->
+
+            <section>
+                <div class="team-details-banner-slider-section">
+                    <div class="row">
+                        <div class="team-details-banner-slide">
+                            <div>
+                                <div class="teams_slide">
+                                    {% for i in teams %}
+                                    <div class="team_slider_padd">
+                                        <div>
+                                            <a href="{% url 'player_detail' i.id %}"><img src="{{i.Team_logo.url}}" width="100%">
+                                                <h6>{{i.Team_name}}</h6>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- header section end -->
+
+    <!-- team-players category section start -->
+
+    <section>
+        <div class="team-players-gategory-sctn">
+            <div class="container">
+
+                <!-- batter section  -->
+
+                <div class="team-players-gategory-sctn-box">
+                    <div class="team-players-gategory-sctn-box-heading">
+                        <h1>Batters</h1>
+                    </div>
+
+
+
+                    <ul class="team-players-gategory-sctn-boxul">
+
+                        {% for player in players %}
+                        {% if player.Player_category == "Batsman" %}
+                        <li class="team-players-gategory-sctn-boxul-list">
+                            <div>
+
+                                <a href="{% url 'profile' player.id %}">
+                                    <div class="team-players-gategory-sctn-boxul-icons">
+                                        <span>
+                                            <img src="{% static 'images/icons8-cricket-bat-64.png' %}" alt="">
+                                        </span>
+                                        <span>
+                                            <img src="{% static 'images/icons8-hockey-glove-64.png'  %}" alt="">
+                                        </span>
+                                    </div>
+                                    <div class="team-players-gategory-sctn-boxul-list-plyr-img">
+                                        <img src="{{player.Player_logo.url}}" alt="">
+                                    </div>
+                                    <div class="team-players-gategory-sctn-boxul-list-plyr-name">
+                                        <h3>{{player.Player_name}}</h3>
+                                        <span>keeper</span>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+
+                <!-- all rounders section  -->
+
+                <div class="team-players-gategory-sctn-box">
+                    <div class="team-players-gategory-sctn-box-heading">
+                        <h1>All Rounders</h1>
+                    </div>
+                    <ul class="team-players-gategory-sctn-boxul">
+
+                        {% for player in players %}
+                        {% if player.Player_category == "All rounder" %}
+                        <li class="team-players-gategory-sctn-boxul-list">
+                            <div>
+
+                                <a href="{% url 'profile' player.id %}">
+                                    <div class="team-players-gategory-sctn-boxul-icons">
+                                        <span>
+                                            <img src="{% static 'images/icons8-c-67.png' %}" alt="">
+                                        </span>
+                                        <span>
+                                            <img src="{% static 'images/icons8-hockey-glove-64.png'  %}" alt="">
+                                        </span>
+                                    </div>
+                                    <div class="team-players-gategory-sctn-boxul-list-plyr-img">
+                                        <img src="{{player.Player_logo.url}}" alt="">
+                                    </div>
+                                    <div class="team-players-gategory-sctn-boxul-list-plyr-name">
+                                        <h3>{{player.Player_name}}</h3>
+                                        <span>All Rounder</span>
+                                    </div>
+                                </a>
+
+                            </div>
+
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <!-- bowlers section -->
+
+                <div class="team-players-gategory-sctn-box">
+                    <div class="team-players-gategory-sctn-box-heading">
+                        <h1>Bowlers</h1>
+                    </div>
+                    <ul class="team-players-gategory-sctn-boxul">
+                        {% for player in players %}
+                        {% if player.Player_category == "Bowler" %}
+                        <li class="team-players-gategory-sctn-boxul-list">
+                            <a href="{% url 'profile' player.id %}">
+                                <div class="team-players-gategory-sctn-boxul-icons">
+                                    <span>
+                                        <img src="{% static 'images/icons8-c-67.png' %}" alt="">
+                                    </span>
+                                    <span>
+                                        <img src="{% static 'images/icons8-cricket-ball-64.png' %}" alt="">
+                                    </span>
+                                </div>
+                                <div class="team-players-gategory-sctn-boxul-list-plyr-img">
+                                    <img src="{{player.Player_logo.url}}" alt="">
+                                </div>
+                                <div class="team-players-gategory-sctn-boxul-list-plyr-name">
+                                    <h3>{{player.Player_name}}</h3>
+                                    <span>Batter</span>
+                                </div>
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- team-players category section end-->
+
+    <!-- footer section start -->
+
+    <footer>
+        <div class="footer_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div>
+                            <p class="italic_font">Be Updated</p>
+                            <h1 class="tblhead redclr">Subscribe us</h1>
+                            <div class="match_details1">
+                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae
+                                    laborum dolore id.
+                                    Totam labore, esse exercitationem officia quae, sapiente a eveniet, velit odit ad
+                                    laudantium
+                                    accusantium necessitatibus obcaecati commodi eos.</p>
+                            </div>
+                            <form action="" class="d-flex justify-content-center">
+                                <input type="text" placeholder="Enter Your Email...">
+                                <a href="" class="sent_btn"><i class="fa-solid fa-paper-plane"></i></a>
+                            </form>
+                            <div class="social_icon">
+                                <ul>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-brands fa-x-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div>
+                                <p class="copy_right">© 2023, CPL - Consultants Premier League | <span>Powered by
+                                        Journex Technology
+                                        Services (JTS).</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- footer section end -->
+
+    <!-- js -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/style.js' %}"></script>
+    <script src="https://kit.fontawesome.com/ef28b1feab.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
